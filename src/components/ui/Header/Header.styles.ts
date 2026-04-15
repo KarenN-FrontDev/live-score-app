@@ -9,9 +9,14 @@ export const HeaderEl = styled.header`
   padding: 28px 20px;
   margin-top: 30px;
   text-align: center;
-  font-size: clamp(28px, 5vw, 38px);
+  text-transform: uppercase; 
+  font-size: 38px;
   font-weight: 700;
   letter-spacing: -1.5px;
   color: #00ff99;
   box-shadow: 0 4px 20px rgba(0, 255, 153, 0.15);
+
+  @media (max-width: 768px) {
+    font-size: 28px;
+  }
 `;

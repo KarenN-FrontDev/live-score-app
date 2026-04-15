@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { Header } from "@/components/Header";
+import { Barlow } from "next/font/google";
 import { Providers } from "./providers";
+import { Header } from "@/components/ui/Header";
 import StyledRegistry from "@/components/StyledRegistry";
 import "./globals.css";
 
@@ -12,13 +13,19 @@ export const metadata: Metadata = {
   },
 };
 
+const barlow = Barlow({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  display: "swap",
+});
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={barlow.className}>
       <body>
         <StyledRegistry>
           <Header />

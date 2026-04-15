@@ -11,8 +11,8 @@ export interface Team {
 }
 
 export interface Status {
-  code: number;
-  type: "notstarted" | "inprogress" | "finished" | "canceled";
+  code?: number;
+  type: "notstarted" | "inprogress" | "finished" | "canceled" | "favorite";
 }
 
 export interface Match {
@@ -20,12 +20,12 @@ export interface Match {
   name: string;
   competition: string;
   country: string;
+  date?: string;
+  time?: string;
   status: Status;
   homeTeam: Team;
   awayTeam: Team;
   homeScore: Score;
   awayScore: Score;
   liveStatus: string;
-  date?: string;
-  time?: string;
 }

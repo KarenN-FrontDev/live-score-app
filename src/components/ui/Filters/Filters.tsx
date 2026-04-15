@@ -16,6 +16,7 @@ const Filters = () => {
     { key: "result", label: "Result" },
     { key: "live", label: "Live" },
     { key: "upcoming", label: "Upcoming" },
+    { key: "favorites", label: "Favorites" },
   ] as const;
 
   return (

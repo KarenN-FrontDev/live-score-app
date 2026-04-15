@@ -1,11 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&display=swap");
-
 :root {
   --bg: #0f0f0f;
-  --card-bg: #1c1c1c;
   --text: #ffffff;
-  --accent: #00ff99;
-  --gray: #888888;
 }
 
 * {

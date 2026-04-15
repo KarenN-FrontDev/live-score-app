@@ -1,7 +1,9 @@
 "use client";
 
 import React from "react";
-import { formatMatchDateTime } from "@/services/date";
+import Image from "next/image";
+import { useFavorites } from "@/hooks/useFavorites";
+import { formatMatchDateTime } from "@/services/utils/dateFormatter";
 import type { Match } from "@/types/match";
 import {
   Card,
@@ -17,13 +19,10 @@ import {
   CircleContainer,
   Circle,
   LiveBadge,
+  StarButton,
 } from "./MatchCard.styles";
 
-interface Props {
-  match: Match;
-}
-
-const MatchCard = React.memo(({ match }: Props) => {
+const MatchCard = React.memo(({ match }: { match: Match }) => {
   const {
     country,
     competition,
@@ -36,6 +35,13 @@ const MatchCard = React.memo(({ match }: Props) => {
     date,
     time,
   } = match;
+
+  const { toggleFavorite, isFavorite } = useFavorites();
+  const favorite = isFavorite(match.id);
+
+  const handleToggleFavorite = () => {
+    toggleFavorite(match.id);
+  };
 
   const isEnded = status.type === "finished";
   const isLive = status.type === "inprogress";
@@ -79,6 +85,15 @@ const MatchCard = React.memo(({ match }: Props) => {
       transition={{ duration: 0.4 }}
       whileHover={{ y: -8 }}
     >
+      <StarButton $active={favorite} onClick={handleToggleFavorite}>
+        <Image
+          src="/assets/icons/star.svg"
+          alt="favorite"
+          width={22}
+          height={22}
+          style={{ borderRadius: "50%" }}
+        />
+      </StarButton>
       <MatchHeader>
         <Country>{country.toUpperCase()}</Country>
         <League>{competition}</League>

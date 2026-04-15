@@ -16,7 +16,10 @@ export const Button = styled.button`
   justify-content: center;
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
   cursor: pointer;
-  transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease,
+    box-shadow 0.2s ease;
 
   &:hover {
     transform: translateY(-2px);

@@ -246,3 +246,24 @@ export const LiveBadge = styled.div`
   animation: livePulse 1.5s infinite;
   box-shadow: 0 0 15px #ffeb3b;
 `;
+
+export const StarButton = styled.button<{ $active: boolean }>`
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  filter: ${({ $active }) =>
+    $active
+      ? "invert(0) sepia(100%) saturate(1200%) brightness(100%)"
+      : "none"};
+  transition: transform 0.2s ease;
+  &:hover {
+    transform: scale(1.2);
+  }
+  &:active {
+    transform: scale(0.9);
+  }
+`;
