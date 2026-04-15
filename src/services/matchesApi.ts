@@ -10,7 +10,7 @@ export const matchesApi = createApi({
     baseUrl: "/",
   }),
   endpoints: (builder) => ({
-    getMatches: builder.query<Match[], Promise<void>>({
+    getMatches: builder.query<Match[], void>({
       query: () => ({
         url:
           process.env.NEXT_PUBLIC_SPORTS_API_URL ??

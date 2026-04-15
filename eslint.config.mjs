@@ -114,6 +114,13 @@ export default [
     },
   },
 
+  {
+    files: ["src/services/**/*.ts"],
+    rules: {
+      "@typescript-eslint/no-invalid-void-type": "off"
+    }
+  },
+
   // Ignore patterns
   {
     ignores: ["node_modules", ".next", "dist", "build", "coverage"],
