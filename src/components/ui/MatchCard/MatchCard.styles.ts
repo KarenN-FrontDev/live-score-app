@@ -1,5 +1,5 @@
-import styled from "styled-components";
 import { motion } from "framer-motion";
+import styled from "styled-components";
 
 export const Card = styled(motion.div)`
   width: auto;
@@ -213,7 +213,7 @@ export const Circle = styled.div<{
   right: 6px;
 
   /* LIVE: progressive border arc ONLY */
-  ${({ $isHighlighted, $progress, $borderColor }) =>
+  ${({ $isHighlighted, $progress }) =>
     $isHighlighted &&
     $progress !== undefined &&
     `

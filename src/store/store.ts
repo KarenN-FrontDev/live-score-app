@@ -1,8 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { loadFavorites, saveFavorites } from "./localStorage";
-import matchesReducer from "./slices/matchesSlice";
-import favoritesReducer from "./slices/favoritesSlice";
+
 import { matchesApi } from "@/services/matchesApi";
+
+import { loadFavorites, saveFavorites } from "./localStorage";
+import favoritesReducer from "./slices/favoritesSlice";
+import matchesReducer from "./slices/matchesSlice";
 
 export const store = configureStore({
   reducer: {

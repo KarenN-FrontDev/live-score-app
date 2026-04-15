@@ -1,5 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+
 import type { Match } from "@/types/match";
+
 import { mockWebSocket } from "./mockWebSocket";
 
 export const matchesApi = createApi({
@@ -8,7 +10,7 @@ export const matchesApi = createApi({
     baseUrl: "/",
   }),
   endpoints: (builder) => ({
-    getMatches: builder.query<Match[], void>({
+    getMatches: builder.query<Match[], Promise<void>>({
       query: () => ({
         url:
           process.env.NEXT_PUBLIC_SPORTS_API_URL ??
@@ -20,7 +22,7 @@ export const matchesApi = createApi({
       async onCacheEntryAdded(
         _arg,
         { updateCachedData, cacheDataLoaded, cacheEntryRemoved },
-      ) {
+      ): Promise<void> {
         mockWebSocket.connect();
 
         try {

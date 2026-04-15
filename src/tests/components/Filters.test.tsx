@@ -1,8 +1,9 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
-import { store } from "@/store/store";
-import { setMatches } from "@/store/slices/matchesSlice";
+
 import { Filters } from "@/components/ui/Filters";
+import { setMatches } from "@/store/slices/matchesSlice";
+import { store } from "@/store/store";
 
 describe("Filters Component", () => {
   beforeEach(() => {

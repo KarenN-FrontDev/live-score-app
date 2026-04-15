@@ -1,10 +1,11 @@
 "use client";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setFilter } from "@/store/slices/matchesSlice";
-import { selectCounts } from "@/store/slices/matchesSlice";
+
+import { selectCounts,setFilter  } from "@/store/slices/matchesSlice";
 import type { RootState } from "@/store/store";
-import { FilterContainer, FilterBtn, CountBadge } from "./Filters.styles";
+
+import { CountBadge,FilterBtn, FilterContainer } from "./Filters.styles";
 
 const Filters = () => {
   const dispatch = useDispatch();

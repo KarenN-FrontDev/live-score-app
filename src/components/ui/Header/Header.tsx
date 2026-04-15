@@ -1,4 +1,5 @@
 import Image from "next/image";
+
 import { HeaderEl } from "./Header.styles";
 
 export default function Header() {

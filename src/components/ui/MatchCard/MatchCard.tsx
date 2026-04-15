@@ -1,25 +1,27 @@
 "use client";
 
-import React from "react";
 import Image from "next/image";
+import React from "react";
+
 import { useFavorites } from "@/hooks/useFavorites";
 import { formatMatchDateTime } from "@/services/utils/dateFormatter";
 import type { Match } from "@/types/match";
+
 import {
   Card,
-  MatchHeader,
+  Circle,
+  CircleContainer,
   Country,
   League,
-  StatusText,
-  ScoreSection,
-  Score,
-  Separator,
-  TeamsSection,
-  TeamName,
-  CircleContainer,
-  Circle,
   LiveBadge,
+  MatchHeader,
+  Score,
+  ScoreSection,
+  Separator,
   StarButton,
+  StatusText,
+  TeamName,
+  TeamsSection,
 } from "./MatchCard.styles";
 
 const MatchCard = React.memo(({ match }: { match: Match }) => {

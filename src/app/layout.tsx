@@ -1,9 +1,12 @@
+import "./globals.css";
+
 import type { Metadata } from "next";
 import { Barlow } from "next/font/google";
-import { Providers } from "./providers";
-import { Header } from "@/components/ui/Header";
+
 import StyledRegistry from "@/components/StyledRegistry";
-import "./globals.css";
+import { Header } from "@/components/ui/Header";
+
+import { Providers } from "./providers";
 
 export const metadata: Metadata = {
   title: "Live Score App",

@@ -1,22 +1,23 @@
 "use client";
 
 import { useDispatch, useSelector } from "react-redux";
-import { loadMoreMatches } from "@/store/slices/matchesSlice";
-import {
-  selectFilteredMatches,
+
+import { MatchCard } from "@/components/ui/MatchCard/index";
+import { ScrollToTopButton } from "@/components/ui/ScrollToTopButton/index";
+import { loadMoreMatches ,
   selectCanLoadMore,
   selectCanLoadMoreFiltered,
   selectCurrentFilteredCount,
+  selectFilteredMatches,
   selectTotalFilteredCount,
 } from "@/store/slices/matchesSlice";
-import { MatchCard } from "@/components/ui/MatchCard/index";
-import { ScrollToTopButton } from "@/components/ui/ScrollToTopButton/index";
+
 import {
   Grid,
-  LoadMoreContainer,
   LoadMoreBtn,
-  TotalCount,
+  LoadMoreContainer,
   NoMatchesMessage,
+  TotalCount,
 } from "./MatchesList.styles";
 
 const MatchesList = () => {

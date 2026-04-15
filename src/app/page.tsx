@@ -1,12 +1,14 @@
 "use client";
 
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+
 import Filters from "@/components/ui/Filters/Filters";
 import { Loader } from "@/components/ui/Loader";
 import { MatchesList } from "@/components/ui/MatchesList";
 import { useGetMatchesQuery } from "@/services/matchesApi";
 import { setMatches } from "@/store/slices/matchesSlice";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+
 import { ErrorMessage, Main } from "./page.styles";
 
 export default function Home() {

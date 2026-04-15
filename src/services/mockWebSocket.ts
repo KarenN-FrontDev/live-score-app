@@ -7,7 +7,7 @@ export class MockWebSocket {
 
   connect() {
     this.isConnected = true;
-    console.log(
+    console.warn(
       "%c[MockWebSocket] Connected – simulating third-party live feed",
       "color:#00ff99",
     );

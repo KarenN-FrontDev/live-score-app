@@ -1,7 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
-import { store } from "@/store/store";
+
 import { MatchCard } from "@/components/ui/MatchCard/index";
+import { store } from "@/store/store";
 
 const mockMatch = {
   id: "test-1",
