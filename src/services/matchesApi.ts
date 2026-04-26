@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-import type { Match } from "@/types/match";
+import type { Match } from "@/shared/types/match";
 
 import { mockWebSocket } from "./mockWebSocket";
 

@@ -1,32 +1,60 @@
 "use client";
 
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+import { Filters } from "@/components/ui/Filters/index";
 import { MatchCard } from "@/components/ui/MatchCard/index";
 import { ScrollToTopButton } from "@/components/ui/ScrollToTopButton/index";
-import { loadMoreMatches ,
+import { Loader } from "@/components/ui/Loader/index";
+import { useGetMatchesQuery } from "@/services/matchesApi";
+
+import {
+  loadMoreMatches,
   selectCanLoadMore,
   selectCanLoadMoreFiltered,
   selectCurrentFilteredCount,
   selectFilteredMatches,
   selectTotalFilteredCount,
+  setMatches,
 } from "@/store/slices/matchesSlice";
 
 import {
+  ErrorMessage,
   Grid,
   LoadMoreBtn,
   LoadMoreContainer,
   NoMatchesMessage,
   TotalCount,
-} from "./MatchesList.styles";
+} from "./MatchesListWithFilters.styles";
 
-const MatchesList = () => {
+const MatchesListWithFilters = () => {
+  const { data: rawMatches = [], isLoading, error } = useGetMatchesQuery();
+
   const dispatch = useDispatch();
   const filteredMatches = useSelector(selectFilteredMatches);
   const canLoadMore = useSelector(selectCanLoadMore);
   const canLoadMoreFiltered = useSelector(selectCanLoadMoreFiltered);
   const currentFilteredCount = useSelector(selectCurrentFilteredCount);
   const totalFilteredCount = useSelector(selectTotalFilteredCount);
+
+  useEffect(() => {
+    if (rawMatches.length > 0) {
+      dispatch(setMatches(rawMatches));
+    }
+  }, [rawMatches, dispatch]);
+
+  if (isLoading) {
+    return <Loader message="Loading live matches..." />;
+  }
+
+  if (error) {
+    return (
+      <ErrorMessage>
+        Failed to load matches. Please try again later.
+      </ErrorMessage>
+    );
+  }
 
   const handleLoadMore = () => {
     dispatch(loadMoreMatches());
@@ -38,6 +66,7 @@ const MatchesList = () => {
 
   return (
     <>
+      <Filters />
       <Grid>
         {filteredMatches.length > 0 ? (
           filteredMatches.map((match) => (
@@ -61,4 +90,4 @@ const MatchesList = () => {
     </>
   );
 };
-export default MatchesList;
+export default MatchesListWithFilters;

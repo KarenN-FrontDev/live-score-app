@@ -4,8 +4,8 @@ import Image from "next/image";
 import React from "react";
 
 import { useFavorites } from "@/hooks/useFavorites";
-import { formatMatchDateTime } from "@/services/utils/dateFormatter";
-import type { Match } from "@/types/match";
+import { formatMatchDateTime } from "@/shared/utils/dateFormatter";
+import type { Match } from "@/shared/types/match";
 
 import {
   Card,

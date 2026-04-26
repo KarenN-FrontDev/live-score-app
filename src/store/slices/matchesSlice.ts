@@ -1,7 +1,7 @@
 import type { PayloadAction} from "@reduxjs/toolkit";
 import { createSelector,createSlice } from "@reduxjs/toolkit";
 
-import type { Match } from "@/types/match";
+import type { Match } from "@/shared/types/match";
 
 import type { RootState } from "../store";
 

@@ -1,4 +1,4 @@
-import type { Match } from "@/types/match";
+import type { Match } from "@/shared/types/match";
 
 export class MockWebSocket {
   private listeners: ((data: Match) => void)[] = [];
