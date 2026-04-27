@@ -6,7 +6,7 @@ import type { RootState } from "@/store/store";
 export const useFavorites = () => {
   const dispatch = useDispatch();
 
-  const ids = useSelector((state: RootState) => state.favorites.ids);
+  const ids = useSelector((state: RootState) => state.favorites?.ids);
 
   const isFavorite = (id: string) => ids.includes(id);
 

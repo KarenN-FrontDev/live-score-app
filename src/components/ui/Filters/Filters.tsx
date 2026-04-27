@@ -2,10 +2,16 @@
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { selectCounts,setFilter  } from "@/store/slices/matchesSlice";
+import { selectCounts, setFilter } from "@/store/slices/matchesSlice";
 import type { RootState } from "@/store/store";
+// import { webSocketClient } from "@/services/websocket/instance";
 
-import { CountBadge,FilterBtn, FilterContainer } from "./Filters.styles";
+import {
+  CountBadge,
+  FilterBtn,
+  FilterContainer,
+  // WSErrorSimulationBtn,
+} from "./Filters.styles";
 
 const Filters = () => {
   const dispatch = useDispatch();
@@ -31,6 +37,17 @@ const Filters = () => {
           {label} <CountBadge>{counts[key as keyof typeof counts]}</CountBadge>
         </FilterBtn>
       ))}
+
+      {/* Button to simulate a WebSocket error for testing purposes */}
+      {/* <WSErrorSimulationBtn
+        onClick={() => {
+          if (webSocketClient && "simulateError" in webSocketClient) {
+            (webSocketClient as any).simulateError();
+          }
+        }}
+      >
+        Simulate WS Error
+      </WSErrorSimulationBtn> */}
     </FilterContainer>
   );
 };

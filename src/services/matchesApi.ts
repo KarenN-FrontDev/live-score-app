@@ -1,14 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
 import type { Match } from "@/shared/types/match";
+import { createWebSocketClient } from "./websocket/factory";
+import { WebSocketMessageHandler } from "@/shared/types/websocket";
 
-import { mockWebSocket } from "./mockWebSocket";
+let wsClient: ReturnType<typeof createWebSocketClient> | null = null;
 
 export const matchesApi = createApi({
   reducerPath: "matchesApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "/",
-  }),
+  baseQuery: fetchBaseQuery({ baseUrl: "/" }),
   endpoints: (builder) => ({
     getMatches: builder.query<Match[], void>({
       query: () => ({
@@ -18,34 +17,56 @@ export const matchesApi = createApi({
         responseHandler: (response) => response.json(),
       }),
 
-      // === REAL-TIME WEBSOCKET CACHE LOGIC ===
       async onCacheEntryAdded(
         _arg,
-        { updateCachedData, cacheDataLoaded, cacheEntryRemoved },
-      ): Promise<void> {
-        mockWebSocket.connect();
+        { cacheDataLoaded, cacheEntryRemoved, updateCachedData },
+      ) {
+        // Initialize the WS client if it has not yet been created.
+        if (!wsClient) {
+          wsClient = createWebSocketClient(
+            process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:3001",
+          );
+          wsClient.connect();
+        }
 
         try {
-          await cacheDataLoaded;
+          // Wait until the initial cache is loaded before subscribing to WS updates
+          const cacheEntry = await cacheDataLoaded;
+          const matches = (cacheEntry as { data: Match[] }).data;
 
-          const listener = (updatedMatch: Match) => {
-            if (!updatedMatch?.id) return;
+          // Set initial matches in WS client if supported (for mock compatibility)
+          if (wsClient && "setInitialMatches" in wsClient) {
+            wsClient.setInitialMatches(matches);
+          }
 
-            updateCachedData((draft: Match[]) => {
-              const index = draft.findIndex((m) => m.id === updatedMatch.id);
-              if (index !== -1) {
-                draft[index] = { ...draft[index], ...updatedMatch };
+          // Handler for incoming score updates from the WS
+          const handleScoreUpdate = (update: {
+            matchId: string;
+            homeScore: number;
+            awayScore: number;
+          }) => {
+            updateCachedData((draft) => {
+              const match = draft.find((m) => m.id === update.matchId);
+              if (match) {
+                match.homeScore = {
+                  ...match.homeScore,
+                  current: update.homeScore,
+                };
+                match.awayScore = {
+                  ...match.awayScore,
+                  current: update.awayScore,
+                };
               }
             });
           };
 
-          mockWebSocket.onMessage(listener);
-        } catch {
-          // No-op – cacheEntryRemoved may resolve before cacheDataLoaded
-        }
+          wsClient.subscribe("scoreUpdate", handleScoreUpdate as unknown as WebSocketMessageHandler);
 
-        await cacheEntryRemoved;
-        mockWebSocket.close();
+          await cacheEntryRemoved;
+          wsClient.unsubscribe("scoreUpdate", handleScoreUpdate as unknown as WebSocketMessageHandler);
+        } catch (err) {
+          console.error("WebSocket subscription failed", err);
+        }
       },
     }),
   }),

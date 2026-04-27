@@ -47,3 +47,25 @@ export const CountBadge = styled.span`
   font-size: 13px;
   font-weight: 500;
 `;
+
+export const WSErrorSimulationBtn = styled.button`
+  background: #b03415;
+  color: #ffffff;
+  border: none;
+  padding: 14px 26px;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  @media (max-width: 480px) {
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+`;
