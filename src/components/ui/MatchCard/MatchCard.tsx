@@ -1,12 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import React from "react";
-
+import { memo } from "react";
 import { useFavorites } from "@/hooks/useFavorites";
-import { formatMatchDateTime } from "@/shared/utils/dateFormatter";
+import { useMatchCardStatus } from "@/hooks/useMatchCardStatus";
 import type { Match } from "@/shared/types/match";
-
 import {
   Card,
   Circle,
@@ -24,61 +22,23 @@ import {
   TeamsSection,
 } from "./MatchCard.styles";
 
-const MatchCard = React.memo(({ match }: { match: Match }) => {
-  const {
-    country,
-    competition,
-    status,
-    homeScore,
-    awayScore,
-    liveStatus,
-    homeTeam,
-    awayTeam,
-    date,
-    time,
-  } = match;
+const MatchCard = memo(({ match }: { match: Match }) => {
+  const { country, competition, homeScore, awayScore, homeTeam, awayTeam } =
+    match;
 
   const { toggleFavorite, isFavorite } = useFavorites();
   const favorite = isFavorite(match.id);
+  const {
+    statusDisplay,
+    statusColor,
+    shouldHighlight,
+    progress,
+    liveMinuteDisplay,
+    isLive,
+    isEnded,
+  } = useMatchCardStatus(match);
 
-  const handleToggleFavorite = () => {
-    toggleFavorite(match.id);
-  };
-
-  const isEnded = status.type === "finished";
-  const isLive = status.type === "inprogress";
-  const isCancelled = status.type === "canceled";
-  const isPreMatch = status.type === "notstarted";
-
-  let statusDisplay = "";
-  let statusColor = "#cccccc";
-
-  if (isCancelled) {
-    statusDisplay = "CANCELLED";
-    statusColor = "#ff4d6d";
-  } else if (isEnded) {
-    statusDisplay = "ENDED";
-    statusColor = "#00ff99";
-  } else if (isLive) {
-    statusDisplay = "LIVE";
-    statusColor = "#ffeb3b";
-  } else if (isPreMatch) {
-    statusDisplay = formatMatchDateTime(date, time) || "PRE-MATCH";
-    statusColor = "#cccccc";
-  }
-
-  const shouldHighlight = (isEnded || isLive) && !isCancelled;
-
-  // Progressive border fill for LIVE only (based on current minute)
-  let progress = undefined;
-  let liveMinuteDisplay = liveStatus;
-
-  if (isLive) {
-    const minute = parseInt(liveStatus.replace(/[^0-9]/g, "")) || 45;
-    progress = Math.min((minute / 90) * 360, 360);
-    const isHalfTime = minute === 45 && !liveStatus.includes("+");
-    liveMinuteDisplay = isHalfTime ? "HT" : `${minute}'`;
-  }
+  const handleToggleFavorite = () => toggleFavorite(match.id);
 
   return (
     <Card
@@ -96,6 +56,7 @@ const MatchCard = React.memo(({ match }: { match: Match }) => {
           style={{ borderRadius: "50%" }}
         />
       </StarButton>
+
       <MatchHeader>
         <Country>{country.toUpperCase()}</Country>
         <League>{competition}</League>
@@ -104,15 +65,14 @@ const MatchCard = React.memo(({ match }: { match: Match }) => {
 
       <ScoreSection>
         <Score>{homeScore.current}</Score>
-        {homeScore.current !== undefined && awayScore.current !== undefined ? (
+        {homeScore.current !== undefined && awayScore.current !== undefined && (
           <Separator>-</Separator>
-        ) : null}
+        )}
         <Score>{awayScore.current}</Score>
       </ScoreSection>
 
       <TeamsSection>
         <TeamName>{homeTeam.name}</TeamName>
-
         <CircleContainer>
           <Circle
             $isHighlighted={shouldHighlight}
@@ -124,7 +84,6 @@ const MatchCard = React.memo(({ match }: { match: Match }) => {
             {isLive && <LiveBadge>LIVE</LiveBadge>}
           </Circle>
         </CircleContainer>
-
         <TeamName>{awayTeam.name}</TeamName>
       </TeamsSection>
     </Card>

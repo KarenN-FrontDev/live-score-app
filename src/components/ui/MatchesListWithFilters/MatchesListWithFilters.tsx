@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Filters } from "@/components/ui/Filters/index";
 import { MatchCard } from "@/components/ui/MatchCard/index";
 import { ScrollToTopButton } from "@/components/ui/ScrollToTopButton/index";
 import { Loader } from "@/components/ui/Loader/index";
-import { useGetMatchesQuery } from "@/services/matchesApi";
+import { useMatchesData } from "@/hooks/useMatchesData";
 
 import {
   loadMoreMatches,
@@ -16,7 +15,6 @@ import {
   selectCurrentFilteredCount,
   selectFilteredMatches,
   selectTotalFilteredCount,
-  setMatches,
 } from "@/store/slices/matchesSlice";
 
 import {
@@ -29,7 +27,7 @@ import {
 } from "./MatchesListWithFilters.styles";
 
 const MatchesListWithFilters = () => {
-  const { data: rawMatches = [], isLoading, error } = useGetMatchesQuery();
+  const { isLoading, error } = useMatchesData();
 
   const dispatch = useDispatch();
   const filteredMatches = useSelector(selectFilteredMatches);
@@ -37,12 +35,6 @@ const MatchesListWithFilters = () => {
   const canLoadMoreFiltered = useSelector(selectCanLoadMoreFiltered);
   const currentFilteredCount = useSelector(selectCurrentFilteredCount);
   const totalFilteredCount = useSelector(selectTotalFilteredCount);
-
-  useEffect(() => {
-    if (rawMatches.length > 0) {
-      dispatch(setMatches(rawMatches));
-    }
-  }, [rawMatches, dispatch]);
 
   if (isLoading) {
     return <Loader message="Loading live matches..." />;
@@ -90,4 +82,5 @@ const MatchesListWithFilters = () => {
     </>
   );
 };
+
 export default MatchesListWithFilters;
